@@ -1,11 +1,14 @@
-import carrito from './assets/cart.svg'
 import './CartWidget.css'
+import cart from './assets/cart.svg'
 
 const CartWidget = () => {
-    return (
 
-        <button class="btn btn-primary" type="button"><img src={carrito} alt='cart'/>3</button>
-    )
+    return(
+        <div to='/cart' className="CartWidget">
+            <img src={cart} alt='cart-widget' className='CartImg'/>
+            {0}
+        </div>
+    );
 }
 
 export default CartWidget
