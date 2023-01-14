@@ -1,26 +1,29 @@
 import './ItemDetailContainer.css'
 import { useState, useEffect } from 'react'
-import { getProductById } from '../../asyncMock'
+import { getDoc, doc } from 'firebase/firestore'
 import ItemDetail from '../ItemDetail/ItemDetail'
 import { useParams } from 'react-router-dom'
+import { db } from '../../services/firebase' 
 
 const ItemDetailContainer = () => {
     const [product, setProduct] = useState()
     const [loading, setLoading] = useState(true)
 
     const { productId } = useParams()
-    console.log(productId)
 
     useEffect(() => {
-        getProductById(productId).then(response => {
-            setProduct(response)
-        }).finally(() => {
-            setLoading(false)
-        })
+
+        const docRefer = doc(db, 'products', productId)
+        getDoc(docRefer).then(response => { 
+            const data = response.data()
+            const productoAdaptado = { id: response.id, ...data}
+            setProduct(productoAdaptado)
+        }).finally(()=> { setLoading(false)})
+
     }, [productId])
 
     if(loading) {
-        return <div class="lds-dual-ring"></div>
+        return <div className="lds-dual-ring"></div>
     }
 
     return(
